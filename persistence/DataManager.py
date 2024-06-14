@@ -60,7 +60,7 @@ class DataManager(IPersistenceManager):
 
 user1 = User(
     email="john.doe@example.com",
-    password="password123",
+    password="supersecretpassword",
     first_name="John",
     last_name="Doe",
     review_id=["review1", "review2"],
@@ -70,10 +70,10 @@ user1.id = 1
 
 # User 2
 user2 = User(
-    email="jane.smith@example.com",
-    password="password456",
+    email="jane.doe@example.com",
+    password="secretpassword",
     first_name="Jane",
-    last_name="Smith",
+    last_name="Doe",
     review_id=["review3"],
     place_id=["place2", "place3"]
 )
