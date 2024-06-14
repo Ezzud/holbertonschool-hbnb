@@ -1,15 +1,14 @@
-class Place:
-    def __init__(self, placeID, owner, address, description, price, city, pictures):
-        self.placeID = placeID
+from models.BaseModel import BaseModel
+
+class Place(BaseModel):
+    def __init__(self, owner = None, address = "", description = "", price = "", city = "", pictures = []):
+        super().__init__()
         self.owner = owner
         self.address = address
         self.description = description
         self.price = price
         self.city = city
         self.pictures = pictures
-    
-    def get_place(self):
-        return self.placeID
     
     def get_owner(self):
         return self.owner
@@ -28,9 +27,6 @@ class Place:
     
     def get_pictures(self):
         return self.pictures
-    
-    def set_place(self, newValue):
-        self.placeID = newValue
 
     def set_owner(self, newValue):
         self.owner = newValue

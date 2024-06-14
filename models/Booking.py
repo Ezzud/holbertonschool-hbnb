@@ -1,14 +1,13 @@
-class Booking:
-    def __init__(self,bookingID,author,dest,startedAt,endAt,status):
-        self.bookingID = bookingID
+from models.BaseModel import BaseModel 
+
+class Booking(BaseModel):
+    def __init__(self, author = None, dest = None, startedAt = None, endAt = None, status = ""):
+        super().__init__()
         self.author = author
         self.dest = dest
         self.startedAt = startedAt
         self.endAt = endAt
         self.status = status
-
-    def get_booking(self):
-        return self.bookingID
     
     def get_author(self):
         return self.author
@@ -27,9 +26,6 @@ class Booking:
     
     def get_status(self):
         return self.status
-    
-    def set_booking(self, neWvalue):
-        self.bookingID = neWvalue
     
     def set_author(self, neWvalue):
         self.author = neWvalue

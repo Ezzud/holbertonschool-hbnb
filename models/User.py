@@ -1,14 +1,16 @@
-class User:
-    def __init__(self, userID, name, email, password, address, phone):
-        self.userID = userID
+from models.BaseModel import BaseModel 
+
+class User(BaseModel):
+    emails = set()
+
+    def __init__(self, name='', email='', password='', address='', phone=''):
+        super().__init__()
         self.name = name
         self.email = email
         self.__password = password
         self.address = address
         self.phone = phone
-    
-    def get_userid(self):
-        return self.userID
+        Users.emails.add(email)
     
     def get_name(self):
         return self.name
@@ -24,9 +26,6 @@ class User:
 
     def get_phone(self):
         return self.phone
-    
-    def set_userid(self, newValue):
-        self.userID = newValue
 
     def set_name(self, newValue):
         self.name = newValue

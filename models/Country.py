@@ -1,16 +1,12 @@
-class Country:
-    def __init__(self,countryID,name):
-        self.countryID = countryID
-        self.name = name
+from models.BaseModel import BaseModel 
 
-    def get_country(self):
-        return self.countryID
+class Country(BaseModel):
+    def __init__(self, name = ""):
+        super().__init__()
+        self.name = name
 
     def get_name(self):
         return self.name
-    
-    def set_country(self, newValue):
-        self.countryID = newValue
 
     def set_name(self, neWvalue):
         self.name = neWvalue

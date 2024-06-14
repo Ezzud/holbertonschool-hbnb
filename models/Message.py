@@ -1,13 +1,11 @@
-class Message: 
-    def __init__(self,messageID,author,dest,content,date):
-        self.messageID = messageID
+from models.BaseModel import BaseModel 
+
+class Message(BaseModel): 
+    def __init__(self, author = None, dest = None, content = ""):
+        super().__init__()
         self.author = author
         self.dest = dest
         self.content = content
-        self.date = date 
-
-    def get_message(self):
-        return self.messageID
     
     def get_author(self):
         return self.author
@@ -17,12 +15,6 @@ class Message:
     
     def get_content(self):
         return self.content
-    
-    def get_date(self):
-        return self.date
-    
-    def set_message(self, neWvalue):
-       self.messageID = neWvalue
 
     def set_author(self, neWvalue):
         self.author = neWvalue
@@ -32,6 +24,3 @@ class Message:
 
     def set_content(self, neWvalue):
         self.content = neWvalue
-
-    def set_date(self, neWvalue):
-        self.date = neWvalue

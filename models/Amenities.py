@@ -1,20 +1,19 @@
-class Amenities:
-    def __init__(self,amenityID,name,description):
-        self.amenityID = amenityID
+from models.BaseModel import BaseModel 
+
+class Amenities(BaseModel):
+    amenities = set()
+
+    def __init__(self, name = "", description = ""):
+        super().__init__()
         self.name = name
         self.description = description
-    
-    def get_amenity(self):
-        return self.amenityID
+        self.amenities.add(name)
     
     def get_name(self):
         return self.name
     
     def get_description(self):
         return self.description
-    
-    def set_amenity(self, neWvalue):
-        self.amenityID = neWvalue
     
     def set_name(self, neWvalue):
         self.name = neWvalue
