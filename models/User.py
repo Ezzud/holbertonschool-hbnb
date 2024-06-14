@@ -10,7 +10,7 @@ class User(BaseModel):
         self.__password = password
         self.address = address
         self.phone = phone
-        Users.emails.add(email)
+        User.emails.add(email)
     
     def get_name(self):
         return self.name

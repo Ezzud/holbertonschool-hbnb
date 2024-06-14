@@ -67,13 +67,13 @@ class TestModels(unittest.TestCase):
     
     def unique_tests(self):
         with self.assertRaises(ValueError):
-            duplicate_user = Users(email="user@example.com", password="supersecretpassword", name = "Jane Doe")
+            duplicate_user = User(email="user@example.com", password="supersecretpassword", name = "Jane Doe")
     
     def mechanism_tests(self):
         self.user.name = "Jane Doe"
         self.user.save()
         
-        updated_user = Users(email="user@example.com")
+        updated_user = User(email="user@example.com")
         self.assertEqual(updated_user.name, "Jane Doe")
     
     def instantiation_tests(self):
@@ -84,7 +84,7 @@ class TestModels(unittest.TestCase):
         valid_place.save()
     
     def assignment_tests(self):
-        new_host = Users(email="new_email@example.com", password="supersecretpassword", name = "New User")
+        new_host = User(email="new_email@example.com", password="supersecretpassword", name = "New User")
         new_host.save()
         
         self.place.user_id = new_host.id
