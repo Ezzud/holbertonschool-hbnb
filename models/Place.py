@@ -1,47 +1,20 @@
 from models.BaseModel import BaseModel
 
 class Place(BaseModel):
-    def __init__(self, owner = None, address = "", description = "", price = "", city = "", pictures = []):
+
+    def __init__(self, obj_id=None, name="", description="", address="", longitude=0.0, latitude=0.0, price_per_night=0.0, number_of_rooms=0, bathrooms=0, max_guests=0, amenity_id=(), city_id="", host_id=""):
         super().__init__()
-        self.owner = owner
-        self.address = address
+        if obj_id != None:
+            self.id = obj_id
+        self.name = name
         self.description = description
-        self.price = price
-        self.city = city
-        self.pictures = pictures
-    
-    def get_owner(self):
-        return self.owner
-    
-    def get_address(self):
-        return self.address
-    
-    def get_description(self):
-        return self.description
-
-    def get_price(self):
-        return self.price
-
-    def get_city(self):
-        return self.city
-    
-    def get_pictures(self):
-        return self.pictures
-
-    def set_owner(self, newValue):
-        self.owner = newValue
-
-    def set_address(self, newValue):
-        self.address = newValue
-
-    def set_description(self, newValue):
-        self.description = newValue
-
-    def set_price(self, newValue):
-        self.price = newValue
-
-    def set_city(self, newValue):
-        self.city = newValue
-    
-    def set_pictures(self, newValue):
-        self.pictures = newValue
+        self.address = address
+        self.longitude = longitude
+        self.latitude = latitude
+        self.price_per_night = price_per_night
+        self.number_of_rooms = number_of_rooms
+        self.bathrooms = bathrooms
+        self.max_guests = max_guests
+        self.amenity_id = amenity_id
+        self.city_id = city_id
+        self.host_id = host_id

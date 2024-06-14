@@ -2,33 +2,12 @@ from models.BaseModel import BaseModel
 
 class Review(BaseModel):
 
-    def __init__(self, placeID = None, client = None, note = "", comment = ""):
+    def __init__(self, obj_id=None, feedback="", rating="", comment="", place_id=None, user_id=None):
         super().__init__()
-        self.placeID = placeID
-        self.client = client
-        self.__note = note
+        if obj_id != None:
+            self.id = obj_id
+        self.feedback = feedback
+        self.rating = rating
         self.comment = comment
-    
-    def get_place(self):
-        return self.placeID
-    
-    def get_client(self):
-        return self.client
-    
-    def get_note(self):
-        return self.__note
-
-    def get_comment(self):
-        return self.comment
-
-    def set_place(self, newValue):
-        self.placeID = newValue
-
-    def set_client(self, newValue):
-        self.client = newValue
-
-    def set_note(self, newValue):
-        self.__note = newValue
-
-    def set_comment(self, newValue):
-        self.comment = newValue
+        self.place_id = place_id
+        self.user_id = user_id

@@ -1,11 +1,11 @@
 from persistence.IPersistenceManager import IPersistenceManager
 from models.BaseModel import BaseModel
-from models.users import Users
-from models.city import City
-from models.country import Country
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
+from models.User import User
+from models.City import City
+from models.Country import Country
+from models.Amenities import Amenities
+from models.Place import Place
+from models.Review import Review
 
 
 class DataManager(IPersistenceManager):
