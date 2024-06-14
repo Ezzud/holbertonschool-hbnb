@@ -1,5 +1,7 @@
 .vscode/*
 .vscode/
-api/__pycache__/*
-persistence/__pycache__/*
+api/__pycache__/
+persistence__pycache__/
 models/__pycache__/*
+__pycache__
+**/__pycache__**

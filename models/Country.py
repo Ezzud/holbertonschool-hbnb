@@ -1,12 +1,12 @@
 from models.BaseModel import BaseModel 
 
 class Country(BaseModel):
-    def __init__(self, name = ""):
+
+    countries = set()
+
+    def __init__(self, name="", population=0, code=None):
         super().__init__()
         self.name = name
-
-    def get_name(self):
-        return self.name
-
-    def set_name(self, neWvalue):
-        self.name = neWvalue
+        self.population = population
+        self.code = code
+        self.countries.add(code)

@@ -1,90 +1,95 @@
 import unittest
 import datetime
 from models.BaseModel import BaseModel
+from models.City import City
 from models.Place import Place
 from models.Country import Country
-from models.City import City
-from models.Amenities import Amenities
+from models.Amenity import Amenity
 from models.User import User
 from models.Review import Review
 
 class TestModels(unittest.TestCase):
 
-    def setup_tests(self):
-        self.user = User(email="user@example.com", password="supersecretpassword", name="John Doe")
-        self.amenity = Amenities()
-        self.amenity.name = "Kitchen"
-        self.amenity.description = "Small Kitchen"
-
+    def setUp(self):
+        self.user = User(email="test@example.com", password="password", first_name="John", last_name="Doe")
+        self.amenity = Amenity()
+        self.amenity.name = "WiFi"
+        self.amenity.description = "Free WiFi"
+        
         self.city = City()
-        self.city.name = "Paris"
+        self.city.name = "San Francisco"
+        self.city.population = 1000000
+        self.city.user_id = self.user.id
         
         self.country = Country()
-        self.country.name = "France"
+        self.country.name = "USA"
+        self.country.population = 330000000
+        self.country.city_id = [self.city.id]
         
-        self.place = Place(owner=self.user.id, address="123 Road", description="Cool place with cool stuff", price="200", city=self.city.id, pictures=[])
+        self.place = Place(name="Test Place", description="A nice place", address="123 Main St", longitude=-122.4194, latitude=37.7749, price_per_night=100.0, number_of_rooms=3, bathrooms=2, max_guests=6, amenity_id=(self.amenity.id,), city_id=self.city.id, user_id=self.user.id)
         
         self.review = Review()
-        self.review.note = "I loved the place and the landscape!"
+        self.review.feedback = "Great place!"
         self.review.rating = 5
+        self.review.comment = "Had a wonderful time."
 
-    def constistency_tests(self):
+    def test_consistency_checks(self):
         now = datetime.datetime.now()
-        self.assertIsInstance(self.user.createdAt, datetime.datetime)
-        self.assertIsInstance(self.user.updatedAt, datetime.datetime)
+        self.assertIsInstance(self.user.created_at, datetime.datetime)
+        self.assertIsInstance(self.user.updated_at, datetime.datetime)
         
-        old_updatedAt = self.user.updatedAt
-        self.user.name = "Jane Doe"
+        old_updated_at = self.user.updated_at
+        self.user.first_name = "Jane"
         self.user.save()
         
-        self.assertNotEqual(old_updatedAt, self.user.updatedAt)
-        self.assertGreater(self.user.updatedAt, old_updatedAt)
+        self.assertNotEqual(old_updated_at, self.user.updated_at)
+        self.assertGreater(self.user.updated_at, old_updated_at)
     
-    def integrity_tests(self):
-        self.place.owner = self.user.id
-        self.assertEqual(self.place.owner, self.user.id)
+    def test_relationship_integrity(self):
+        self.place.user_id = self.user.id
+        self.assertEqual(self.place.user_id, self.user.id)
         
-        self.review.placeID = self.place.id
-        self.review.client = self.user.id
+        self.review.place = self.place.id
+        self.review.user = self.user.id
         
-        self.assertEqual(self.review.placeID, self.place.id)
-        self.assertEqual(self.review.client, self.user.id)
+        self.assertEqual(self.review.place, self.place.id)
+        self.assertEqual(self.review.user, self.user.id)
     
-    def enforcement_tests(self):
-        another_user = User(email="secondary@example.com", password="supersecretpassword", name="Jane Doe")
+    def test_business_rule_enforcement(self):
+        another_user = User(email="another@example.com", password="password", first_name="Jane", last_name="Smith")
         
         with self.assertRaises(ValueError):
-            another_place = Place(name="Another Place", description="Another nice place", owner=another_user.id)
-            self.place.owner = another_user.id
+            another_place = Place(name="Another Place", description="Another nice place", user_id=self.user.id)
+            self.place.user_id = another_user.id
             self.place.save()
     
-    def validation_tests(self):
+    def test_user_creation_validation(self):
         with self.assertRaises(ValueError):
-            invalid_user = User(email="random_fake_email", password="supersecretpassword", name = "John Doe")
+            invalid_user = User(email="invalid_email", password="password", first_name="John", last_name="Doe")
         
         with self.assertRaises(ValueError):
-            invalid_user = User(email="", password="supersecretpassword", name = "John Doe")
+            invalid_user = User(email="", password="password", first_name="John", last_name="Doe")
     
-    def unique_tests(self):
+    def test_unique_email_constraint(self):
         with self.assertRaises(ValueError):
-            duplicate_user = User(email="user@example.com", password="supersecretpassword", name = "Jane Doe")
+            duplicate_user = User(email="test@example.com", password="password", first_name="Jane", last_name="Doe")
     
-    def mechanism_tests(self):
-        self.user.name = "Jane Doe"
+    def test_update_mechanism(self):
+        self.user.first_name = "Jane"
         self.user.save()
         
-        updated_user = User(email="user@example.com")
-        self.assertEqual(updated_user.name, "Jane Doe")
+        updated_user = User(email="test@example.com")
+        self.assertEqual(updated_user.first_name, "Jane")
     
-    def instantiation_tests(self):
+    def test_place_instantiation(self):
         with self.assertRaises(ValueError):
-            invalid_place = Place(name="", description="Another nice place", owner=self.user.id)
+            invalid_place = Place(name="", description="Description", address="123 Main St", longitude=-122.4194, latitude=37.7749, price_per_night=100.0, number_of_rooms=3, bathrooms=2, max_guests=6)
         
-        valid_place = Place(name="A Correct Place", description="Another nice place", owner=self.user.id)
+        valid_place = Place(name="Valid Place", description="Description", address="123 Main St", longitude=-122.4194, latitude=37.7749, price_per_night=100.0, number_of_rooms=3, bathrooms=2, max_guests=6)
         valid_place.save()
     
-    def assignment_tests(self):
-        new_host = User(email="new_email@example.com", password="supersecretpassword", name = "New User")
+    def test_host_assignment_rules(self):
+        new_host = User(email="newhost@example.com", password="password", first_name="New", last_name="Host")
         new_host.save()
         
         self.place.user_id = new_host.id
@@ -92,7 +97,7 @@ class TestModels(unittest.TestCase):
         
         self.assertEqual(self.place.user_id, new_host.id)
     
-    def att_validation_tests(self):
+    def test_place_attribute_validation(self):
         with self.assertRaises(ValueError):
             self.place.latitude = 200.0
             self.place.save()
@@ -101,19 +106,26 @@ class TestModels(unittest.TestCase):
             self.place.price_per_night = -100.0
             self.place.save()
     
-    def deleting_tests(self):
+    def test_deleting_places(self):
         place_id = self.place.id
         self.place.delete()
         
         with self.assertRaises(ValueError):
             Place.get(place_id)
     
-    def amenities_tests(self):
+    def test_amenity_addition(self):
+        self.place.add_amenity(self.amenity.id)
+        self.assertIn(self.amenity.id, self.place.amenity_id)
+        
+        with self.assertRaises(ValueError):
+            self.place.add_amenity(self.amenity.id)
+    
+    def test_retrieve_and_update_amenities(self):
         amenity_id = self.amenity.id
         self.amenity.name = "Updated WiFi"
         self.amenity.save()
         
-        updated_amenity = Amenities.get(amenity_id)
+        updated_amenity = Amenity.get(amenity_id)
         self.assertEqual(updated_amenity.name, "Updated WiFi")
 
 if __name__ == '__main__':

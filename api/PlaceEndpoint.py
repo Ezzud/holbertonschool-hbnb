@@ -115,7 +115,7 @@ def create_review(place_id):
 def get_place_reviews(place_id):
     all_reviews = DataManager.storage["Review"]
 
-    if not place_id in [value["id"] for value in DataManager.storage["Users"]]:
+    if not place_id in [value["id"] for value in DataManager.storage["User"]]:
         return jsonify("User not found"), 404
 
     user_reviews = [review for review in all_reviews if review["place_id"] == place_id]
