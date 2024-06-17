@@ -25,7 +25,7 @@ def get_all_users():
 @user_bp.route('/users', methods=['POST'])
 def create_user():
     jData = request.get_json()
-    for field in ["email", "name"]:
+    for field in ["email", "first_name", "last_name"]:
         if not isinstance(jData[field], str):
             return jsonify("Bad Request"), 400
     if not checkEmail(jData["email"]):
@@ -35,7 +35,7 @@ def create_user():
 
     user = User(
         email=jData["email"],
-        password="",
+        password=jData["password"],
         first_name=jData["first_name"],
         last_name=jData["last_name"]
     )
