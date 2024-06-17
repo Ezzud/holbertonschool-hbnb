@@ -18,7 +18,6 @@ def get_all_places():
 def create_place():
     jData = request.get_json()
     if not -90 < jData["latitude"] < 90 or not isinstance(jData["price_per_night"], float):
-        print("latitude error")
         return jsonify("Bad Request"), 400
     for field in ['number_of_rooms', 'bathrooms', 'max_guests']:
         if jData[field] < 0:

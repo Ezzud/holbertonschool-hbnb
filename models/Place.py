@@ -18,3 +18,5 @@ class Place(BaseModel):
         self.amenity_id = amenity_id
         self.city_id = city_id
         self.host_id = host_id
+        if(name == ""):
+            raise ValueError("Place not defined")

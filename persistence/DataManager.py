@@ -1,4 +1,5 @@
 from persistence.IPersistenceManager import IPersistenceManager
+from datetime import datetime
 from models.BaseModel import BaseModel
 from models.User import User
 from models.City import City
@@ -16,7 +17,6 @@ class DataManager(IPersistenceManager):
             if isinstance(entity, BaseModel):
                 user = entity.__dict__
                 class_type = entity.__class__.__name__
-
                 if class_type in DataManager.storage.keys():
                     DataManager.storage[class_type].append(user)
                 else:
@@ -44,6 +44,7 @@ class DataManager(IPersistenceManager):
             print(entity.id)
             for idx, user in enumerate(DataManager.storage[class_type]):
                 if user["id"] == entity.id:
+                    entity.updatedAt = str(datetime.now())
                     DataManager.storage[class_type][idx] = entity.__dict__
                     return entity.__dict__
             raise EntityNotFoundError("Bad Request")

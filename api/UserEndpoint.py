@@ -16,7 +16,6 @@ def checkEmail(email):
         v = validate_email(email)
         return v["email"]
     except EmailNotValidError as e:
-        print(str(e))
         return False
 
 @user_bp.route('/users', methods=['GET'])
@@ -37,7 +36,8 @@ def create_user():
     user = User(
         email=jData["email"],
         password="",
-        name=jData["name"]
+        first_name=jData["first_name"],
+        last_name=jData["last_name"]
     )
     return dm.save(user), 201
 
@@ -55,7 +55,8 @@ def update_user(user_id):
 
     user = User(
         email=jData["email"],
-        name=jData["name"]
+        first_name=jData["first_name"],
+        last_name=jData["last_name"]
     )
 
     user.id = user_id
@@ -75,11 +76,12 @@ def delete_user(user_id):
 @user_bp.route('/users/<int:user_id>/reviews', methods=['GET'])
 def get_user_reviews(user_id):
     all_reviews = DataManager.storage["Review"]
+    print(all_reviews)
 
     if not user_id in [value["id"] for value in DataManager.storage["User"]]:
         return jsonify("User not found"), 404
 
-    user_reviews = [review for review in all_reviews if review["client"] == user_id]
+    user_reviews = [review for review in all_reviews if review["user_id"] == user_id]
 
     return jsonify(user_reviews), 200
 
